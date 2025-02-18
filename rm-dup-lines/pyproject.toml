@@ -1,0 +1,10 @@
+[project]
+name="rm_dup_lines"
+version="0.1.0"
+authors=[{name="Rui", email="ruippgoncalves@protonmail.com"}]
+description=""" """
+license={text="MIT"}
+dependencies=["jjcli"]
+
+[project.scripts]
+rl="rm_dup_lines:main"
