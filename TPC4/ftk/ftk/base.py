@@ -13,6 +13,7 @@ class TokenKind(Enum):
     STOP_WORD = 2
     PUNCTUATION = 3
 
+
 class Token:
     def __init__(self, src: str, kind: TokenKind):
         self.src = src
@@ -21,10 +22,12 @@ class Token:
     def __repr__(self):
         return self.src
 
+
 class AbstractLexer(ABC):
     @abstractmethod
     def lex(self, txt: str) -> Iterable[Token]:
         pass
+
 
 class DefaultLexer(AbstractLexer):
     def lex(self, txt: str) -> Iterable[Token]:
@@ -38,19 +41,23 @@ class DefaultLexer(AbstractLexer):
                 kind = TokenKind.PUNCTUATION
             yield Token(value, kind)
 
+
 class AbstractStage(ABC):
     @abstractmethod
     def apply(self, item: Any) -> Any:
         pass
+
 
 class AbstractReductionStage(ABC):
     @abstractmethod
     def apply(self, items: Iterable[Any]) -> Any:
         pass
 
+
 class IdentityReductionStage(AbstractReductionStage):
     def apply(self, items: Iterable[Any]) -> Any:
         return items
+
 
 class Pipeline:
     def __init__(self):
@@ -74,6 +81,7 @@ class Pipeline:
             tokens = map(stage.apply, tokens)
 
         return self.reduction.apply(tokens)
+
 
 class Convert2ProbabilityStage(AbstractReductionStage):
     def apply(self, items: Iterable[Any]) -> Any:

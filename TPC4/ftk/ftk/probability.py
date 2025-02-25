@@ -48,13 +48,16 @@ class Probability(ABC):
     def __repr__(self):
         return f"{self.value:.2f}"
 
+
 class AbsoluteProbability(Probability):
     pass
+
 
 class RelativeProbability(Probability):
     @property
     def value(self):
         return self.count / self.total if self.total > 0 else 0.0
+
 
 class RelativeProbabilityPerMillion(RelativeProbability):
     @property
@@ -63,12 +66,15 @@ class RelativeProbabilityPerMillion(RelativeProbability):
             return math.inf
         return super().value * 1_000_000
 
+
 class LogarithmicProbability(Probability):
     @property
     def value(self):
         return math.log(self.count / self.total) if self.count > 0 and self.total > 0 else float('-inf')
 
+
 zeroProbability = AbsoluteProbability(0, 0)
+
 
 def ratio(freqs, cmp_freqs):
     return {key: (freq / cmp_freqs.get(key, zeroProbability)) for key, freq in freqs.items()}
