@@ -20,7 +20,7 @@ def pretty_print(freqs, opts):
     else:
         print(total)
         for key, val in freqs.items():
-            print(f'{key}\t{val}')
+            print(f'{val}\t{key}')
 
 def main():
     """Options:
