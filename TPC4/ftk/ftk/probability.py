@@ -3,11 +3,21 @@ from abc import ABC
 
 
 class Probability(ABC):
-    def __init__(self, count: int, total: int):
-        if not (0 <= count <= total):
-            raise ValueError("Count must be between 0 and total.")
-        self.count = count
-        self.total = total
+    def __init__(self, *args):
+        if len(args) == 1:
+            assert isinstance(args[0], Probability)
+            prob = args[0]
+            self.count = prob.count
+            self.total = prob.total
+        elif len(args) == 2:
+            count, total = args
+            assert isinstance(count, int), isinstance(total, int)
+            if not (0 <= count <= total):
+                raise ValueError("Count must be between 0 and total.")
+            self.count = count
+            self.total = total
+        else:
+            raise ValueError("Invalid number of arguments.")
 
     @property
     def value(self):
@@ -33,6 +43,11 @@ class RelativeProbability(Probability):
     @property
     def value(self):
         return self.count / self.total if self.total > 0 else 0.0
+
+class RelativeProbabilityPerMillion(RelativeProbability):
+    @property
+    def value(self):
+        return super().value * 1_000_000
 
 class LogarithmicProbability(Probability):
     @property

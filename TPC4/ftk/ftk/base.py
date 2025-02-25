@@ -2,7 +2,6 @@ import re
 from abc import abstractmethod, ABC
 from typing import Iterable, Any
 
-import jjcli
 from collections import Counter
 from enum import Enum
 
@@ -78,15 +77,6 @@ class Pipeline:
 
 class Convert2ProbabilityStage(AbstractReductionStage):
     def apply(self, items: Iterable[Any]) -> Any:
-        c = Counter(items)
+        c = Counter(map(lambda i: i.src, items))
         total = c.total()
         return {item: AbsoluteProbability(count, total) for item, count in c.items()}
-
-def main():
-    cl = jjcli.clfilter()
-    pipe = Pipeline()
-    pipe.set_reduction(Convert2ProbabilityStage())
-
-    for txt in cl.text():
-        c = pipe.apply(txt)
-        print(c)
